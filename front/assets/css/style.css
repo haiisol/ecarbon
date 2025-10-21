@@ -76,7 +76,7 @@ h6 {
 }
 
 .section {
-  padding: 30px 0;
+  padding: 50px 0;
   scroll-margin-top: 60px;
 }
 @media (max-width: 767.98px) {
@@ -758,7 +758,7 @@ h6 {
   }
 }
 .hero__v6 {
-  padding: 10rem 0 !important;
+  padding: 10rem 0 7rem !important;
 }
 .hero__v6 .hero-subtitle {
   background: color-mix(in srgb, var(--bs-secondary), transparent 70%);
@@ -791,7 +791,8 @@ h6 {
 }
 
 .hero__v6 .logos img {
-  width: 140px;
+  height: 30px;
+  object-fit: contain;
 }
 .hero__v6 .hero-img {
   position: relative;
@@ -830,10 +831,6 @@ h6 {
   border-radius: 50%;
   background-color: var(--bs-secondary);
   color: var(--bs-primary);
-}
-
-.features__v2 .content {
-  background-color: rgba(var(--bs-secondary-rgb), 0.2);
 }
 
 .features__v2 .btn-play i {
