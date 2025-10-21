@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  
-  
-
   const sections = document.querySelectorAll(".section");
   const navLinks = document.querySelectorAll(".fbs__net-navbar .scroll-link");
 
@@ -47,42 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   window.addEventListener("scroll", updateActiveLink);
-
-  const portfolioGrid = document.querySelector('#portfolio-grid');
-  if (portfolioGrid) {
-    var iso = new Isotope("#portfolio-grid", {
-      itemSelector: ".portfolio-item",
-      layoutMode: "masonry",
-    });
-
-    if (iso) {
-      iso.on("layoutComplete", updateActiveLink);
-
-      imagesLoaded("#portfolio-grid", function () {
-        iso.layout();
-        updateActiveLink();
-      });
-    }
-
-    var filterButtons = document.querySelectorAll(".filter-button");
-    if (filterButtons) {
-      filterButtons.forEach(function (button) {
-        button.addEventListener("click", function (e) {
-          e.preventDefault();
-          var filterValue = button.getAttribute("data-filter");
-          iso.arrange({ filter: filterValue });
-
-          filterButtons.forEach(function (btn) {
-            btn.classList.remove("active");
-          });
-          button.classList.add("active");
-          updateActiveLink();
-        });
-      });
-    }
-
-    updateActiveLink();
-  }
 });
 
 const navbarScrollInit = () => {
@@ -225,90 +186,16 @@ const logoMarqueeInit = () => {
   }
 };
 
-document.addEventListener("DOMContentLoaded", logoMarqueeInit);
+// document.addEventListener("DOMContentLoaded", logoMarqueeInit);
 
 // ======= Navbar Scroll =======
 document.addEventListener("DOMContentLoaded", function () {
-  logoMarqueeInit();
+  // logoMarqueeInit();
   navbarInit();
   window.addEventListener("scroll", navbarScrollInit);
 });
 
-// ======= Swiper =======
-const swiperInit = () => {
-  var swiper = new Swiper(".testimonialSwiper", {
-    slidesPerView: 1,
-    speed: 700,
-    spaceBetween: 30,
-    loop: true,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    breakpoints: {
-      640: {
-        slidesPerView: 1.5,
-        spaceBetween: 20,
-      },
-      768: {
-        slidesPerView: 2.5,
-        spaceBetween: 30,
-      },
-      1024: {
-        slidesPerView: 2.5,
-        spaceBetween: 30,
-      },
-    },
-    navigation: {
-      nextEl: ".custom-button-next",
-      prevEl: ".custom-button-prev",
-    },
-  });
-
-  const progressCircle = document.querySelector(".autoplay-progress svg");
-  const progressContent = document.querySelector(".autoplay-progress span");
-  if (progressCircle && progressContent ) {
-    var swiper2 = new Swiper(".sliderSwiper", {
-      slidesPerView: 1,
-      speed: 700,
-      spaceBetween: 0,
-      loop: true,
-      centeredSlides: true,
-      autoplay: {
-        delay: 7000,
-        disableOnInteraction: false
-      },
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      navigation: {
-        nextEl: ".custom-button-next",
-        prevEl: ".custom-button-prev",
-      },
-
-      on: {
-        autoplayTimeLeft(s, time, progress) {
-          progressCircle.style.setProperty("--progress", 1 - progress);
-          progressContent.textContent = `${Math.ceil(time / 1000)}s`;
-        }
-      }
-    });
-  }
-
-};
-
-document.addEventListener("DOMContentLoaded", swiperInit);
-
-// ======= Glightbox =======
-const glightBoxInit = () => {
-  const lightbox = GLightbox({
-    touchNavigation: true,
-    loop: true,
-    autoplayVideos: true,
-  });
-};
-document.addEventListener("DOMContentLoaded", glightBoxInit);
+// document.addEventListener("DOMContentLoaded", swiperInit);
 
 // ======= BS OffCanvass =======
 const bsOffCanvasInit = () => {
@@ -375,14 +262,14 @@ const inlineSvgInit = () => {
             }
           });
 
-          // imgElement.replaceWith(svgElement);
+          imgElement.replaceWith(svgElement);
         })
         .catch((error) => console.error("Error fetching SVG:", error));
     });
   }
 };
 
-document.addEventListener("DOMContentLoaded", inlineSvgInit);
+// document.addEventListener("DOMContentLoaded", inlineSvgInit);
 
 // ======= AOS =======
 const aosInit = () => {

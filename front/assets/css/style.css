@@ -11,7 +11,7 @@ Buy Pro
   --bs-body-color: #494B5B;
   /* --bs-primary: #215C5C; */
   --bs-primary: #215C27;
-  --bs-primary-rgb: 33, 92, 92;
+  --bs-primary-rgb: 33, 92, 39;
   --bs-primary-hover: #144B4B;
   --bs-primary-hover-rgb: 20, 75, 75;
   --bs-secondary: #CCE8C9;
@@ -677,6 +677,7 @@ h6 {
 }
 .fbs__net-navbar .offcanvas-header .offcanvas-header-logo .logo-link .logo.dark {
   display: block;
+  max-width: 150px;
 }
 
 .fbs__net-navbar .offcanvas-header .offcanvas-header-logo .logo-link .logo.light {
@@ -1004,19 +1005,32 @@ h6 {
   bottom: 0px;
   border-radius: 50%;
   background-color: rgba(var(--bs-secondary-rgb), 1);
+  z-index: 0;
 }
 
 .services__v3 .icon svg {
+  position: relative;
   width: 50px;
+  z-index: 1;
 }
-.services__v3 .service-card {
+
+.features__v2 .service-card,
+.services__v3 .service-card,
+.services__v3 .tech-card {
   border: 1px solid rgba(var(--inverse-color-rgb), 0.2);
 }
 
-.faq__v2 {
+.tech-card .card-body span {
+  margin-top: -16px;
+}
+
+.faq__v2,
+.features__v2,
+.challenges {
   background-color: rgba(var(--inverse-color-rgb), 0.02);
 }
 
+.features__v2 .subtitle,
 .faq__v2 .subtitle {
   background-color: rgba(var(--bs-secondary-rgb), 0.2);
   color: var(--bs-primary);
