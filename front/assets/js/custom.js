@@ -1,6 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll(".section");
   const navLinks = document.querySelectorAll(".fbs__net-navbar .scroll-link");
+  const offcanvasElement = document.getElementById("fbs__net-navbars");
+  const offcanvasBootstrap = bootstrap.Offcanvas.getInstance(offcanvasElement);
+
+  if (offcanvasBootstrap) {
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        offcanvasBootstrap.hide();
+      });
+    });
+  } else {
+    const newOffcanvasInstance = new bootstrap.Offcanvas(offcanvasElement);
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        newOffcanvasInstance.hide();
+      });
+    });
+  }
 
   function removeActiveClasses() {
     if (navLinks) {
@@ -9,9 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function addActiveClass(currentSectionId) {
-    const activeLink = document.querySelector(
-      `.fbs__net-navbar .scroll-link[href="#${currentSectionId}"]`
-    );
+    const activeLink = document.querySelector(`.fbs__net-navbar .scroll-link[href="#${currentSectionId}"]`);
     if (activeLink) {
       activeLink.classList.add("active");
     }
@@ -71,7 +86,7 @@ const navbarInit = () => {
 const logoMarqueeInit = () => {
   const wrapper = document.querySelector(".logo-wrapper");
   const boxes = gsap.utils.toArray(".logo-item");
-  
+
   if (boxes.length > 0) {
     const loop = horizontalLoop(boxes, {
       paused: false,
@@ -79,7 +94,7 @@ const logoMarqueeInit = () => {
       speed: 0.25,
       reversed: false,
     });
-    
+
     function horizontalLoop(items, config) {
       items = gsap.utils.toArray(items);
       config = config || {};
@@ -87,8 +102,7 @@ const logoMarqueeInit = () => {
           repeat: config.repeat,
           paused: config.paused,
           defaults: { ease: "none" },
-          onReverseComplete: () =>
-            tl.totalTime(tl.rawTime() + tl.duration() * 100),
+          onReverseComplete: () => tl.totalTime(tl.rawTime() + tl.duration() * 100),
         }),
         length = items.length,
         startX = items[0].offsetLeft,
@@ -97,8 +111,7 @@ const logoMarqueeInit = () => {
         xPercents = [],
         curIndex = 0,
         pixelsPerSecond = (config.speed || 1) * 100,
-        snap =
-          config.snap === false ? (v) => v : gsap.utils.snap(config.snap || 1), // some browsers shift by a pixel to accommodate flex layouts, so for example if width is 20% the first element's width might be 242px, and the next 243px, alternating back and forth. So we snap to 5 percentage points to make things look more natural
+        snap = config.snap === false ? (v) => v : gsap.utils.snap(config.snap || 1), // some browsers shift by a pixel to accommodate flex layouts, so for example if width is 20% the first element's width might be 242px, and the next 243px, alternating back and forth. So we snap to 5 percentage points to make things look more natural
         totalWidth,
         curX,
         distanceToStart,
@@ -109,10 +122,7 @@ const logoMarqueeInit = () => {
         // convert "x" to "xPercent" to make things responsive, and populate the widths/xPercents Arrays to make lookups faster.
         xPercent: (i, el) => {
           let w = (widths[i] = parseFloat(gsap.getProperty(el, "width", "px")));
-          xPercents[i] = snap(
-            (parseFloat(gsap.getProperty(el, "x", "px")) / w) * 100 +
-              gsap.getProperty(el, "xPercent")
-          );
+          xPercents[i] = snap((parseFloat(gsap.getProperty(el, "x", "px")) / w) * 100 + gsap.getProperty(el, "xPercent"));
           return xPercents[i];
         },
       });
@@ -121,15 +131,13 @@ const logoMarqueeInit = () => {
         items[length - 1].offsetLeft +
         (xPercents[length - 1] / 100) * widths[length - 1] -
         startX +
-        items[length - 1].offsetWidth *
-          gsap.getProperty(items[length - 1], "scaleX") +
+        items[length - 1].offsetWidth * gsap.getProperty(items[length - 1], "scaleX") +
         (parseFloat(config.paddingRight) || 0);
       for (i = 0; i < length; i++) {
         item = items[i];
         curX = (xPercents[i] / 100) * widths[i];
         distanceToStart = item.offsetLeft + curX - startX;
-        distanceToLoop =
-          distanceToStart + widths[i] * gsap.getProperty(item, "scaleX");
+        distanceToLoop = distanceToStart + widths[i] * gsap.getProperty(item, "scaleX");
         tl.to(
           item,
           {
@@ -141,14 +149,11 @@ const logoMarqueeInit = () => {
           .fromTo(
             item,
             {
-              xPercent: snap(
-                ((curX - distanceToLoop + totalWidth) / widths[i]) * 100
-              ),
+              xPercent: snap(((curX - distanceToLoop + totalWidth) / widths[i]) * 100),
             },
             {
               xPercent: xPercents[i],
-              duration:
-                (curX - distanceToLoop + totalWidth - curX) / pixelsPerSecond,
+              duration: (curX - distanceToLoop + totalWidth - curX) / pixelsPerSecond,
               immediateRender: false,
             },
             distanceToLoop / pixelsPerSecond
@@ -158,8 +163,7 @@ const logoMarqueeInit = () => {
       }
       function toIndex(index, vars) {
         vars = vars || {};
-        Math.abs(index - curIndex) > length / 2 &&
-          (index += index > curIndex ? -length : length); // always go in the shortest direction
+        Math.abs(index - curIndex) > length / 2 && (index += index > curIndex ? -length : length); // always go in the shortest direction
         let newIndex = gsap.utils.wrap(0, length, index),
           time = times[newIndex];
         if (time > tl.time() !== index > curIndex) {
@@ -234,7 +238,6 @@ const backToTopInit = () => {
 
 document.addEventListener("DOMContentLoaded", backToTopInit);
 
-
 // ======= Inline SVG =======
 const inlineSvgInit = () => {
   const imgElements = document.querySelectorAll(".js-img-to-inline-svg");
@@ -253,9 +256,7 @@ const inlineSvgInit = () => {
             if (attr.name !== "class") {
               svgElement.setAttribute(attr.name, attr.value);
             } else {
-              const classes = attr.value
-                .split(" ")
-                .filter((className) => className !== "js-img-to-inline-svg");
+              const classes = attr.value.split(" ").filter((className) => className !== "js-img-to-inline-svg");
               if (classes.length > 0) {
                 svgElement.setAttribute("class", classes.join(" "));
               }
@@ -275,10 +276,10 @@ const inlineSvgInit = () => {
 const aosInit = () => {
   AOS.init({
     duration: 800,
-    easing: 'slide',
-    once: true
+    easing: "slide",
+    once: true,
   });
-}
+};
 document.addEventListener("DOMContentLoaded", aosInit);
 
 // ======= PureCounter =======
@@ -286,49 +287,49 @@ const pureCounterInit = () => {
   new PureCounter({
     selector: ".purecounter",
   });
-}
+};
 document.addEventListener("DOMContentLoaded", pureCounterInit);
 
 // ======= Disable Click Navbar Dropdown =======
 const addHoverEvents = (dropdown) => {
-  const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+  const dropdownToggle = dropdown.querySelector(".dropdown-toggle");
 
   const preventClick = (event) => event.preventDefault();
   const showDropdown = () => {
-    dropdown.classList.add('show');
-    dropdownToggle.setAttribute('aria-expanded', 'true');
-    const dropdownMenu = dropdown.querySelector('.dropdown-menu');
-    dropdownMenu.classList.add('show');
+    dropdown.classList.add("show");
+    dropdownToggle.setAttribute("aria-expanded", "true");
+    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+    dropdownMenu.classList.add("show");
   };
   const hideDropdown = () => {
-    dropdown.classList.remove('show');
-    dropdownToggle.setAttribute('aria-expanded', 'false');
-    const dropdownMenu = dropdown.querySelector('.dropdown-menu');
-    dropdownMenu.classList.remove('show');
+    dropdown.classList.remove("show");
+    dropdownToggle.setAttribute("aria-expanded", "false");
+    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+    dropdownMenu.classList.remove("show");
   };
 
   // Disable the click event for toggling the dropdown
-  dropdownToggle.addEventListener('click', preventClick);
+  dropdownToggle.addEventListener("click", preventClick);
 
   // Open dropdown on hover
-  dropdown.addEventListener('mouseover', showDropdown);
+  dropdown.addEventListener("mouseover", showDropdown);
 
   // Close dropdown when mouse leaves
-  dropdown.addEventListener('mouseleave', hideDropdown);
+  dropdown.addEventListener("mouseleave", hideDropdown);
 
   // Store references to the event listeners for later removal
   dropdown.__events = { preventClick, showDropdown, hideDropdown };
 };
 
 const removeHoverEvents = (dropdown) => {
-  const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+  const dropdownToggle = dropdown.querySelector(".dropdown-toggle");
   const { preventClick, showDropdown, hideDropdown } = dropdown.__events || {};
 
   if (preventClick) {
     // Remove the event listeners
-    dropdownToggle.removeEventListener('click', preventClick);
-    dropdown.removeEventListener('mouseover', showDropdown);
-    dropdown.removeEventListener('mouseleave', hideDropdown);
+    dropdownToggle.removeEventListener("click", preventClick);
+    dropdown.removeEventListener("mouseover", showDropdown);
+    dropdown.removeEventListener("mouseleave", hideDropdown);
 
     // Remove the reference to the stored events
     delete dropdown.__events;
@@ -336,18 +337,16 @@ const removeHoverEvents = (dropdown) => {
 };
 
 const handleNavbarEvents = () => {
-  const dropdowns = document.querySelectorAll('.navbar .dropdown');
-  const dropstarts = document.querySelectorAll('.navbar .dropstart');
-  const dropends = document.querySelectorAll('.navbar .dropend');
+  const dropdowns = document.querySelectorAll(".navbar .dropdown");
+  const dropstarts = document.querySelectorAll(".navbar .dropstart");
+  const dropends = document.querySelectorAll(".navbar .dropend");
 
   if (window.innerWidth >= 992) {
-
     // Add hover events to dropdowns
     dropdowns.forEach(addHoverEvents);
     dropstarts.forEach(addHoverEvents);
     dropends.forEach(addHoverEvents);
   } else {
-
     // Remove hover events from dropdowns
     dropdowns.forEach(removeHoverEvents);
     dropstarts.forEach(removeHoverEvents);
@@ -357,9 +356,9 @@ const handleNavbarEvents = () => {
 
 // Function to handle resizing
 const handleResize = () => {
-  const dropdowns = document.querySelectorAll('.navbar .dropdown');
-  const dropstarts = document.querySelectorAll('.navbar .dropstart');
-  const dropends = document.querySelectorAll('.navbar .dropend');
+  const dropdowns = document.querySelectorAll(".navbar .dropdown");
+  const dropstarts = document.querySelectorAll(".navbar .dropstart");
+  const dropends = document.querySelectorAll(".navbar .dropend");
 
   // Remove hover events before rechecking window size
   dropdowns.forEach(removeHoverEvents);
@@ -371,14 +370,11 @@ const handleResize = () => {
 };
 
 // Call the function on resize event and initially
-window.addEventListener('resize', handleResize);
+window.addEventListener("resize", handleResize);
 handleNavbarEvents();
-
-
 
 // ======= Coming Soon Countdown =======
 const countdownInit = () => {
-
   // Get the current year
   const currentYear = new Date().getFullYear();
   const nextYear = currentYear + 1;
@@ -387,18 +383,16 @@ const countdownInit = () => {
   // Change this "December 31, 2024 23:59:59" to your your website launch date
   // const launchDate = new Date("December 31, 2024 23:59:59").getTime();
 
-
   const x = setInterval(function () {
-
     const now = new Date().getTime();
-      
+
     const distance = launchDate - now;
-      
+
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      
+
     // Output the result in an element with id
     const daysEl = document.getElementById("days");
     const hoursEl = document.getElementById("hours");
@@ -416,7 +410,7 @@ const countdownInit = () => {
     if (secondsEl) {
       secondsEl.innerText = seconds;
     }
-      
+
     // If the count down is finished, write some text
     if (distance < 0) {
       clearInterval(x);
@@ -424,5 +418,4 @@ const countdownInit = () => {
     }
   }, 1000);
 };
-document.addEventListener('DOMContentLoaded', countdownInit);
-
+document.addEventListener("DOMContentLoaded", countdownInit);
